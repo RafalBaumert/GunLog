@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  /* This property is not for a typography but for declare 1rem */
+  /* font-size: 62.5%; */
+  /* 1rem = 10px */
+}
+
+body {
+  box-sizing: border-box;
+  font-family: 'Spartan', sans-serif;
+  /* font-size: 1.6rem; */
+  line-height: 1.5rem;
+  color: #dbdde0;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  min-height: 100vh;
+  /* background: #1f2d40; */
+  background: #17212f;
+}
+
+::selection {
+  background-color: #81c784;
+  color: #1f2d40;
+}

@@ -1,26 +1,42 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="application">
+    <div class="container">
+      <Menu v-if="isAuthenticated" />
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import store from './store';
+import Menu from '@/components/MainMenu.vue';
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  components: { Menu },
+
+  data() {
+    return {};
+  },
+
+  computed: {
+    isAuthenticated() {
+      return store.getters.isAuthenticated;
+    },
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+/* .application {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: min-content 1fr max-content;
+  grid-template-columns: 1fr;
 }
+
+.container {
+  margin: 5rem auto;
+  width: 600px;
+} */
 </style>
