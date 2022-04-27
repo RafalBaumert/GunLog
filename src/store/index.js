@@ -13,9 +13,22 @@ const store = createStore({
       return !!state.user.token;
     },
   },
+
   actions: {
     loadGunDetails(context, gunDetails) {
       context.commit('gunLogDetails', gunDetails);
+    },
+
+    updateGunDetails(context, payload) {
+      context.commit('updateGunDetails', payload);
+    },
+
+    updateGunDetailsEdited(context, payload) {
+      context.commit('updateGunDetailsEdited', payload);
+    },
+
+    clearGunDetailsEdited(context) {
+      context.commit('clearGunDetailsEdited');
     },
   },
 
@@ -34,6 +47,24 @@ const store = createStore({
 
     setGunsStorage(state, payload) {
       state.gunsStorage = payload;
+    },
+
+    updateGunDetails(state, payload) {
+      state.gunDetails = {
+        ...state.gunDetails,
+        ...payload,
+      };
+    },
+
+    updateGunDetailsEdited(state, payload) {
+      state.gunDetailsEdited = {
+        ...state.gunDetailsEdited,
+        ...payload,
+      };
+    },
+
+    clearGunDetailsEdited(state) {
+      delete state.gunDetailsEdited;
     },
   },
 });

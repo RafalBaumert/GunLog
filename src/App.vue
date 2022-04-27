@@ -1,6 +1,9 @@
 <template>
   <div class="application">
     <div class="container">
+      <div v-if="isDevBoxVisible">
+        <dev-box>state: {{ $store.state }}</dev-box>
+      </div>
       <Menu v-if="isAuthenticated" />
       <router-view></router-view>
     </div>
@@ -9,14 +12,18 @@
 
 <script>
 import store from './store';
+
+import DevBox from './components/DevBox.vue';
 import Menu from '@/components/MainMenu.vue';
 
 export default {
   name: 'App',
-  components: { Menu },
+  components: { DevBox, Menu },
 
   data() {
-    return {};
+    return {
+      isDevBoxVisible: false,
+    };
   },
 
   computed: {
@@ -24,10 +31,29 @@ export default {
       return store.getters.isAuthenticated;
     },
   },
+
+  methods: {
+    toggleDevBox(event) {
+      if (event.ctrlKey && event.key === 'z') {
+        this.isDevBoxVisible = !this.isDevBoxVisible;
+      }
+    },
+  },
+
+  beforeMount() {
+    document.addEventListener('keydown', this.toggleDevBox);
+  },
 };
 </script>
 
 <style>
+.application {
+  width: 100%;
+}
+
+.container {
+}
+
 /* .application {
   height: 100vh;
   display: grid;

@@ -11,14 +11,6 @@
 
     <div class="gunlog-content">
       <Card style="width: 100%" v-if="this.$store.state.gunDetails">
-        <!-- <template #header>
-          <div class="card-image">
-            <img
-              src="../assets/glock.png"
-              style="height: 10rem; width: 13rem; margin: 0 auto"
-            />
-          </div>
-        </template> -->
         <template #title>
           Model: {{ this.$store.state.gunDetails.model }}
         </template>
@@ -39,7 +31,13 @@
               <li>
                 <div class="gd-li-header">Data zakupu</div>
                 <div class="gd-li-body">
-                  {{ formatDate(this.$store.state.gunDetails.date) }}
+                  {{
+                    this.$store.state.gunDetails.date === undefined ||
+                    this.$store.state.gunDetails.date === null ||
+                    this.$store.state.gunDetails.date === ''
+                      ? ''
+                      : formatDate(this.$store.state.gunDetails.date)
+                  }}
                 </div>
               </li>
               <li>
@@ -66,7 +64,26 @@
               <li>
                 <div class="gd-li-header">Cena</div>
                 <div class="gd-li-body">
-                  {{ this.$store.state.gunDetails.price }} zł
+                  {{
+                    this.$store.state.gunDetails.price === undefined ||
+                    this.$store.state.gunDetails.price === null
+                      ? ''
+                      : this.$store.state.gunDetails.price + ' zł'
+                  }}
+                </div>
+              </li>
+              <li
+                v-if="this.$store.state.gunDetails.nextCleanDate !== undefined"
+              >
+                <div class="gd-li-header">Data kolejnego czyszczenia</div>
+                <div class="gd-li-body">
+                  {{
+                    this.$store.state.gunDetails.nextCleanDate === undefined ||
+                    this.$store.state.gunDetails.nextCleanDate === null ||
+                    this.$store.state.gunDetails.nextCleanDate === ''
+                      ? ''
+                      : formatDate(this.$store.state.gunDetails.nextCleanDate)
+                  }}
                 </div>
               </li>
             </ul>
@@ -75,8 +92,18 @@
         <template #footer>
           <div class="card-footer">
             <div class="gunlog-footer-created">
-              Utworzono:
-              {{ formatDateFull(this.$store.state.gunDetails.timestamp) }}
+              <span>
+                Utworzono:
+                {{
+                  formatDateFull(this.$store.state.gunDetails.timestamp)
+                }}</span
+              >
+              <span v-if="this.$store.state.gunDetails.modified">
+                Ostatnio edytowano:
+                {{
+                  formatDateFull(this.$store.state.gunDetails.modified)
+                }}</span
+              >
             </div>
             <div class="card-footer-btns">
               <Button icon="pi pi-pencil" label="Edytuj" @click="editHandler" />
@@ -202,7 +229,17 @@ export default {
     },
 
     editHandler() {
-      this.$router.replace('/edit');
+      if (this.$store.state.gunDetails.firebaseKey) {
+        this.$router.replace('/edit');
+      } else {
+        this.$toast.add({
+          severity: 'warn',
+          summary: 'Uwaga!',
+          detail:
+            'Aby edytować broń, należy podświetlić ją na liście jednostek broni, znajdującej się po lewej stronie.',
+          life: 3000,
+        });
+      }
     },
   },
 };
@@ -273,6 +310,8 @@ li:last-child {
 .gunlog-footer-created {
   color: #a0a6ae;
   font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-footer-btn-delete {

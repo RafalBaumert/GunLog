@@ -23,6 +23,13 @@
                 :sortable="true"
               ></Column>
             </DataTable>
+            <div class="gunlist-add-btn">
+              <Button
+                icon="pi pi-plus"
+                class="p-button-rounded p-button-outlined p-button-sm"
+                @click="addBtnHandler"
+              />
+            </div>
           </div>
           <div v-else>
             <p>
@@ -30,6 +37,13 @@
               <router-link to="/addgun" class="router-link">Dodaj</router-link>
               nową broń.
             </p>
+            <div class="gunlist-add-btn">
+              <Button
+                icon="pi pi-plus"
+                class="p-button-rounded p-button-outlined p-button-sm"
+                @click="addBtnHandler"
+              />
+            </div>
           </div>
         </template>
       </Card>
@@ -44,9 +58,10 @@ import store from '../store';
 import Card from 'primevue/card';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Button from 'primevue/button';
 
 export default {
-  components: { Card, DataTable, Column },
+  components: { Card, DataTable, Column, Button },
 
   data() {
     return {
@@ -81,21 +96,13 @@ export default {
     async loadGunsStorage() {
       this.guns = await service.fetchGunsStorageFromFirebase();
     },
+    addBtnHandler() {
+      this.$router.replace('/addgun');
+    },
   },
 
   beforeMount() {
     this.loadGunsStorage();
-  },
-
-  expandNode(node) {
-    if (node.items && node.items.length) {
-      this.expandedKeys[node.key] = true;
-
-      for (let child of node.items) {
-        this.expandNode(child);
-      }
-    }
-    console.log(node);
   },
 };
 </script>
@@ -109,5 +116,12 @@ export default {
 .router-link {
   color: #81c784;
   text-decoration: none;
+}
+
+.gunlist-add-btn {
+  width: 100%;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
 }
 </style>

@@ -1,10 +1,7 @@
 <template>
-  <!-- <dev-box>state: {{ $store.state }}</dev-box> -->
-
   <div class="dashboard">
     <div class="left-trail"></div>
     <div class="main-view">
-      <!-- <div class="main-view-content">W przygotowaniu</div> -->
       <div class="main-view-content">W przygotowaniu</div>
     </div>
     <div class="right-trail"></div>
@@ -12,8 +9,6 @@
 </template>
 
 <script>
-// import DevBox from '../components/DevBox.vue';
-
 export default {
   components: {},
 };

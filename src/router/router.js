@@ -5,6 +5,7 @@ import Dashboard from '../pages/Dashboard.vue';
 import NewGun from '../pages/NewGun.vue';
 import GunLog from '../pages/GunLog.vue';
 import EditGun from '../components/EditGun';
+import Settings from '../pages/Settings';
 import store from '../store/index.js'; // Dodane na potrzeby router navigation guards beforeEach()
 
 const router = createRouter({
@@ -17,6 +18,7 @@ const router = createRouter({
     { path: '/gunlog', component: GunLog },
     // { path: '/edit', component: EditGun, meta: { requiresAuth: true } },
     { path: '/edit', component: EditGun },
+    { path: '/settings', component: Settings },
   ],
 });
 

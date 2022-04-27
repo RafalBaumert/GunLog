@@ -182,6 +182,7 @@ const service = {
         firebaseKey: userUID,
         id: responseData[userUID].id,
         timestamp: responseData[userUID].timestamp,
+        modified: responseData[userUID].modified,
         category: responseData[userUID].category,
         manufacturer: responseData[userUID].manufacturer,
         model: responseData[userUID].model,
@@ -190,6 +191,7 @@ const service = {
         price: responseData[userUID].price,
         state: responseData[userUID].state,
         info: responseData[userUID].info,
+        nextCleanDate: responseData[userUID].nextCleanDate,
       };
 
       guns.push(gun);
@@ -215,6 +217,27 @@ const service = {
 
     if (!response.ok) {
       // For error handling
+    }
+  },
+
+  async updateGun(data) {
+    const userId = localStorage.getItem('userId');
+
+    const response = await fetch(
+      `${DATABASE_LINK}${userId}/gunStorage/${data.firebaseKey}.json`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    // const responseData = await response.json();
+
+    if (!response.ok) {
+      // error ...
     }
   },
 };

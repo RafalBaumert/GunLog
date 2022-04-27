@@ -4,6 +4,8 @@ import './styles/global.css';
 import router from './router/router.js';
 import store from './store/index.js';
 
+import init from './init';
+
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/vela-green/theme.css';
 import 'primevue/resources/primevue.min.css'; //core css
@@ -17,6 +19,8 @@ const app = createApp(App);
 
 app.use(router);
 app.use(store);
+
+init();
 
 app.mount('#app');
 

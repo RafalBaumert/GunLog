@@ -1,7 +1,7 @@
 <template>
-  <!-- <dev-box>state: {{ $store.state }}</dev-box> -->
-
   <div class="editgun">
+    <div><MoreOptions /></div>
+
     <form @submit.prevent="editSubmitHandler">
       <Card style="width: 50em">
         <template #title> Edycja </template>
@@ -102,10 +102,26 @@
               <label for="used">używana</label>
             </div>
           </div>
-          <div class="gunedit-more-info">
+          <div class="gunedit-more-info form-field">
             <label>Dodatkowe informacje</label>
             <Textarea v-model="gunDetailsEdited.info" rows="5" cols="77" />
           </div>
+          <transition>
+            <span
+              class="form-field p-float-label"
+              v-if="
+                this.$store.state.gunDetailsEdited.nextCleanDate !== undefined
+              "
+            >
+              <Calendar
+                class="input-field"
+                id="date"
+                v-model="gunDetailsEdited.nextCleanDate"
+                autocomplete="off"
+              />
+              <label for="date">Data czyszczenia</label>
+            </span>
+          </transition>
         </template>
         <template #footer>
           <div class="editgun-card-btns">
@@ -130,7 +146,7 @@
 </template>
 
 <script>
-// import DevBox from '../components/DevBox.vue';
+import service from '../services/gunbook.service';
 
 import Card from 'primevue/card';
 import InputText from 'primevue/inputtext';
@@ -139,6 +155,8 @@ import Button from 'primevue/button';
 import Calendar from 'primevue/calendar';
 import InputNumber from 'primevue/inputnumber';
 import Textarea from 'primevue/textarea';
+
+import MoreOptions from './MoreOprions.vue';
 
 export default {
   components: {
@@ -149,6 +167,7 @@ export default {
     Calendar,
     InputNumber,
     Textarea,
+    MoreOptions,
   },
 
   data() {
@@ -161,34 +180,56 @@ export default {
     formatDate(timestamp) {
       const d = new Date(timestamp);
 
-      return d.toLocaleDateString('en-EN', {
+      return d.toLocaleDateString('pl-PL', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
       });
     },
 
-    cancelHandler() {
-      this.$router.replace('/gunlog');
+    async cancelHandler() {
+      await this.$router.replace('/gunlog');
+      await this.$store.dispatch('clearGunDetailsEdited');
     },
 
-    editSubmitHandler() {
-      console.log('Gun updated 😎');
+    async editSubmitHandler() {
+      this.gunDetailsEdited.modified = new Date();
+      await this.$store.dispatch('loadGunDetails', this.gunDetailsEdited);
+      await service.updateGun(this.gunDetailsEdited);
+      this.$router.replace('/gunlog');
     },
   },
 
   beforeMount() {
+    // create new object & copy content from gunDetails
     this.gunDetailsEdited = {
       ...this.$store.state.gunDetails,
-      date: this.formatDate(this.$store.state.gunDetails.date),
+      // date:
+      //   this.$store.state.gunDetails.date === undefined ||
+      //   this.$store.state.gunDetails.date === null ||
+      //   this.$store.state.gunDetails.date === ''
+      //     ? ''
+      //     : this.formatDate(this.$store.state.gunDetails.date),
+      ...(this.$store.state.gunDetails.nextCleanDate && {
+        // nextCleanDate:
+        //   this.$store.state.gunDetails.nextCleanDate === undefined ||
+        //   this.$store.state.gunDetails.nextCleanDate === null ||
+        //   this.$store.state.gunDetails.nextCleanDate === ''
+        //     ? ''
+        //     : // : this.formatDate(this.$store.state.gunDetails.nextCleanDate),
+        //       this.$store.state.gunDetails.nextCleanDate,
+        nextCleanDate: this.$store.state.gunDetails.nextCleanDate,
+      }),
     };
+    // add the object gunDetailsEdited to Vuex state
+    this.$store.dispatch('updateGunDetailsEdited', this.gunDetailsEdited);
   },
 };
 </script>
 
 <style scoped>
 .editgun {
-  width: 100%;
+  width: 80%;
   margin: 2rem auto;
   display: flex;
   justify-content: center;
@@ -217,8 +258,31 @@ export default {
 }
 
 .editgun-card-btns {
-  margin-top: 2rem;
+  margin-top: 0rem;
   display: flex;
   justify-content: space-between;
+}
+
+/* Animations */
+.v-enter-from {
+  opacity: 0;
+}
+
+.v-enter-active {
+  transition: all 0.3s ease-in;
+}
+
+.v-enter-to {
+  opacity: 1;
+}
+
+.v-leave-from {
+  opacity: 1;
+}
+.v-leave-active {
+  transition: all 0.3s ease-out;
+}
+.v-leave-to {
+  opacity: 0;
 }
 </style>

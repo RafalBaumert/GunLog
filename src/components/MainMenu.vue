@@ -14,24 +14,17 @@ export default {
   data() {
     return {
       items: [
-        {
-          label: 'Główna',
-          icon: 'pi pi-fw pi-home',
-          command: () => {
-            this.$router.replace('/dashboard');
-          },
-        },
+        // {
+        //   label: 'Główna',
+        //   icon: 'pi pi-fw pi-home',
+        //   command: () => {
+        //     this.$router.replace('/dashboard');
+        //   },
+        // },
         {
           label: 'Szafa',
           icon: 'pi pi-fw pi-box',
           items: [
-            {
-              label: 'Dodaj nową broń',
-              icon: 'pi pi-fw pi-plus',
-              command: () => {
-                this.$router.replace('/addgun');
-              },
-            },
             {
               label: 'Broń',
               icon: 'pi pi-fw pi-list',
@@ -46,20 +39,36 @@ export default {
             //     this.$router.replace('/gunlog');
             //   },
             // },
+            {
+              label: 'Dodaj nową broń',
+              icon: 'pi pi-fw pi-plus',
+              command: () => {
+                this.$router.replace('/addgun');
+              },
+            },
+            // {
+            //   label: 'Dodaj amunicję',
+            //   icon: 'pi pi-fw pi-plus',
+            //   command: () => {
+            //     this.$router.replace('/addgun');
+            //   },
+            // },
           ],
         },
         // {
-        //   label: 'Strzelnica',
-        //   icon: 'pi pi-fw pi-times-circle',
-        //   items: [
-        //     { label: 'Dodaj strzelanie', icon: 'pi pi-fw pi-plus' },
-        //     {
-        //       label: 'Zestawienie',
-        //       icon: 'pi pi-fw pi-list',
-        //     },
-        //   ],
+        //   label: 'Strzelcy',
+        //   icon: 'pi pi-fw pi-users',
+        //   command: () => {
+        //     this.$router.replace('/shooters');
+        //   },
         // },
-
+        // {
+        //   label: 'Ustawienia',
+        //   icon: 'pi pi-fw pi-cog',
+        //   command: () => {
+        //     this.$router.replace('/settings');
+        //   },
+        // },
         {
           label: 'Wyloguj',
           icon: 'pi pi-fw pi-power-off',

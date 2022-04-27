@@ -9,6 +9,9 @@
 export default {
   name: 'DevBox',
   components: {},
+
+  props: ['toggleData'],
+
   data() {
     return {
       isDevBoxVisible: true,
@@ -31,6 +34,7 @@ export default {
   overflow: auto;
   top: 0;
   right: 0;
+  /* left: 0; */
   bottom: 0;
   width: 40%;
   font-size: 13.5px;
